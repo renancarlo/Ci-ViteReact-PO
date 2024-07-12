@@ -15,6 +15,7 @@ const LoginForm = () => {
     const [userDiv, setUserDiv] = useState('d-none');
     const [userInputInvalid, setUserInputInvalid] = useState('');
     const [loading, showLoading] = useState('');
+    const [errors, setErrors] = useState();
 
     const redirect = useNavigate();
 
@@ -39,6 +40,7 @@ const LoginForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const csrfToken = await axios.get(`/api/csrf-token`);
         if(!username || !password){
             if(!username){
@@ -65,10 +67,11 @@ const LoginForm = () => {
                 });
                 
                 if(response.data.status === 'success'){
-                    console.log('success');
                     redirect(response.data.redirect);
                 }else{
-
+                    
+                    // setErrors(response.data.errors);
+                    // console.log(errors);
                 }
             }catch(err){
 
@@ -81,7 +84,20 @@ const LoginForm = () => {
     return (
         <section className="col-md-12 p-4">    
             <div className="row d-flex align-items-center justify-content-center m-4">
+           
                  <div className="shadow col-md-4 d-flex align-items-center justify-content-center rounded" id="login_container" style={{backgroundColor: 'rgba(253, 253, 253, 0.3)'}}>
+                        {/* { (errors)?
+                        <div className="alert alert-danger" role="alert">
+                            <ul>
+                            {
+                                Object.keys(errors).map(keys =>(
+                                    <li>{errors[keys]}</li>
+                                ))
+                            }
+                            </ul>
+                        </div>
+                        :""
+                        } */}
                     <div className="card-body p-3">
                         <div className="row">
                         <div className="col-12 mb-3">
